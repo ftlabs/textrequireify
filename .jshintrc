@@ -1,0 +1,15 @@
+{
+    "indent": 1,
+    "asi": true,
+    "sub": true,
+    "node": true,
+    "esnext": true,
+    "browser": false,
+    "noarg": true,
+    "globals": ["describe","it","before","after","beforeEach","afterEach","teardown","suite","test","spawnTest","suiteWithPackages"],
+    "globalstrict": true,
+    "quotmark": false,
+    "undef": true,
+    "unused": false,
+    "loopfunc": true
+}

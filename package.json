@@ -1,0 +1,12 @@
+{
+  "name": "textrequireify",
+  "description": "Browserify transform to support require('text!module/filename')",
+  "version": "0.0.1",
+  "dependencies": {
+    "through": "^2.3.4",
+    "falafel": "^0.3.1"
+  },
+  "peerDependencies": {
+    "browserify": "3.x"
+  }
+}
