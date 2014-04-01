@@ -5,8 +5,6 @@ var through = require('through');
 var falafel = require('falafel');
 var fs = require('fs');
 
-var prefix = /^text!/;
-
 function create(config) {
 	return function(file) {
 		var source = '';
@@ -30,11 +28,8 @@ function create(config) {
 			return String(falafel(source, {loc:true}, function(node) {
 
 				// Find require() calls
-				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'require') {
+				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'requireText') {
 					var requirePath = node.arguments[0].value;
-					if (!prefix.test(requirePath)) return; // skip if not require('text!path')
-
-					requirePath = requirePath.replace(prefix,'');
 
 					var fsPath;
 					if (/^\.+\//.test(requirePath)) {

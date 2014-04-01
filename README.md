@@ -1,20 +1,20 @@
 # textrequireify
 
-Browserify transform that implements RequireJS-like `require('text!module/filename')` includes.
+Browserify transform that includes text files using `requireText('module/filename')` syntax.
 
 ## Usage
 
 ### JS files
 
-The transform only processes files with `.js` extension. Required files *must* be UTF-8 encoded.
+The transform is only applied to JS files with a `.js` extension. It can include any file as long as it's UTF-8 encoded.
 
-	require('text!example/file.ext');
+	requireText('modulename/file.ext');
 
-This expression will be replaced with a string with contents of the `file.ext` from `example` module. This is the recommended, require-js-compatible syntax.
+This expression will be replaced with a string with contents of the `file.ext` from `modulename` module.
 
-	require('text!../relative/path/file.ext');
+	requireText('./relative/path/file.ext');
 
-File will be loaded from the path relative to the file containing the `require()` call.
+File will be loaded from the path relative to the file containing the `requireText()` call.
 
 ### Browserify API
 
