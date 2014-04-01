@@ -46,13 +46,14 @@ function create(config) {
 					}
 
 					if (config.rootDirectory && fsPath.substring(0, rootDirectory.length) !== rootDirectory) {
-						throw new Error("Can't require '" + requirePath + "' in '" + file + ":" + node.loc.start.line + "', because the path escapes the root directory");
+						throw new Error("Can't require '" + requirePath + "' in '" + file + ":" + node.loc.start.line + "', because the path points outside the root directory (too many '../'?)");
 					}
 
 					if (!fs.existsSync(fsPath)) {
 						throw new Error("Can't require '" + requirePath + "' in '" + file + ":" + node.loc.start.line + "', because the file '" + fsPath + "' doesn't exist");
 					}
 
+					// JSON.stringify escapes the text as a JS string literal
 					node.update(JSON.stringify(fs.readFileSync(fsPath, {encoding:'utf-8'})));
 				}
 			}));
