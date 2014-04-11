@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "dependencies": {
     "through": "^2.3.4",
-    "falafel": "^0.3.1"
+    "falafel": "git+https://github.com/Financial-Times/node-falafel.git"
   },
   "peerDependencies": {
     "browserify": "3.x"
