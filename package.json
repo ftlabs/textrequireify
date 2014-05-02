@@ -1,8 +1,8 @@
 {
   "name": "textrequireify",
   "description": "Browserify transform to support require('text!module/filename')",
-  "repository": "http://git.svc.ft.com:8080/scm/ot/textrequireify.git",
-  "version": "0.1.1",
+  "repository": "https://github.com/ftlabs/textrequireify.git",
+  "version": "1.0.0",
   "dependencies": {
     "through": "^2.3.4",
     "falafel": "git+https://github.com/Financial-Times/node-falafel.git"
