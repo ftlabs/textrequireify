@@ -10,7 +10,7 @@ function create(config) {
 		var source = '';
 		if (!(/\.js$/).test(file)) return through();
 
-		var rootDirectory = config.rootDirectory && path.normalize(config.rootDirectory);
+		var rootDirectory = path.normalize(config.rootDirectory || './bower_components/');
 
 		var tr = through(function(buf){source += buf;}, function(){
 			try {
