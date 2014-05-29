@@ -10,7 +10,7 @@ function create(config) {
 		var source = '';
 		if (!(/\.js$/).test(file)) return through();
 
-		var rootDirectory = config.rootDirectory && path.normalize(config.rootDirectory);
+		var rootDirectory = path.normalize(config.rootDirectory || './bower_components/');
 
 		var tr = through(function(buf){source += buf;}, function(){
 			try {
@@ -34,13 +34,11 @@ function create(config) {
 					var fsPath;
 					if (/^\.+\//.test(requirePath)) {
 						fsPath = path.resolve(path.dirname(file), requirePath); // relative paths are relative to the current file
-					} else if (config.rootDirectory) {
+					} else if (rootDirectory) {
 						fsPath = path.resolve(rootDirectory, requirePath); // absolute paths require rootDirectory setting
-					} else {
-						throw new Error("Can't require '" + requirePath + "' in '" + file + ":" + node.loc.start.line + "', because config.rootDirectory is not set");
 					}
 
-					if (config.rootDirectory && fsPath.substring(0, rootDirectory.length) !== rootDirectory) {
+					if (fsPath.substring(0, rootDirectory.length) !== rootDirectory) {
 						throw new Error("Can't require '" + requirePath + "' in '" + file + ":" + node.loc.start.line + "', because the path points outside the root directory (too many '../'?)");
 					}
 
