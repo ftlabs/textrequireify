@@ -8,6 +8,6 @@
     "falafel": "git+https://github.com/Financial-Times/node-falafel.git"
   },
   "peerDependencies": {
-    "browserify": "3.x"
+    "browserify": "*"
   }
 }
