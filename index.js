@@ -1,5 +1,7 @@
 'use strict';
 
+var requireTextFunctionName = 'requireText';
+
 var path = require('path');
 var through = require('through');
 var falafel = require('falafel');
@@ -14,9 +16,13 @@ function create(config) {
 
 		var tr = through(function(buf){source += buf;}, function(){
 			try {
-				tr.queue(parse());
-			}
-			catch (err) {
+				// Avoid parsing the file if the function can't be there
+				if (-1 === source.indexOf(requireTextFunctionName)) {
+					tr.queue(source);
+				} else {
+					tr.queue(parse(source));
+				}
+			} catch(err) {
 				err.debowerifyFile = file;
 				err.sourcecode = source;
 				tr.emit('error', err);
@@ -25,11 +31,11 @@ function create(config) {
 		});
 		return tr;
 
-		function parse () {
+		function parse() {
 			return String(falafel(source, {loc:true}, function(node) {
 
 				// Find require() calls
-				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'requireText') {
+				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === requireTextFunctionName) {
 					var requirePath = node.arguments[0].value;
 
 					var fsPath;
