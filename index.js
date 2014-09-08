@@ -18,6 +18,7 @@ function create(config) {
 			}
 			catch (err) {
 				err.debowerifyFile = file;
+				err.sourcecode = source;
 				tr.emit('error', err);
 			}
 			tr.queue(null);
