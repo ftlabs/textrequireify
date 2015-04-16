@@ -3,17 +3,17 @@
   "description": "Browserify transform to support requireText('plain.txt')",
   "repository": "https://github.com/ftlabs/textrequireify.git",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test/test.js"
   },
   "version": "1.1.0",
   "dependencies": {
-    "through": "^2.3.4",
-    "falafel": "git+https://github.com/Financial-Times/node-falafel.git"
+    "falafel": "^1.0.1",
+    "through": "^2.3.4"
   },
   "peerDependencies": {
     "browserify": "*"
   },
   "devDependencies": {
-    "mocha": "^1.21.4"
+    "mocha": "^2.2.1"
   }
 }

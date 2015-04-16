@@ -32,7 +32,7 @@ function create(config) {
 		return tr;
 
 		function parse() {
-			return String(falafel(source, {loc:true}, function(node) {
+			return String(falafel(source, { locations: true, ecmaVersion: 6 }, function(node) {
 
 				// Find require() calls
 				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === requireTextFunctionName) {
