@@ -5,6 +5,8 @@ var through = require('through');
 var falafel = require('falafel');
 var fs = require('fs');
 
+var prefix = /^text!/;
+
 function create(config) {
 	return function(file) {
 		var source = '';
@@ -28,8 +30,16 @@ function create(config) {
 			return String(falafel(source, { locations: true, ecmaVersion: 6 }, function(node) {
 
 				// Find require() calls
-				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === 'requireText') {
-					var requirePath = node.arguments[0].value;
+				if (node.type === 'CallExpression' && node.callee.type === 'Identifier') {
+					var requirePath;
+
+					if(node.callee.name === 'requireText') { // requireText("file.txt")
+						requirePath = node.arguments[0].value;
+					} else if(node.callee.name === 'require' && prefix.test(node.arguments[0].value)) { // require("text!file.txt")
+						requirePath = node.arguments[0].value.replace(prefix, '');
+					} else {// none of the above, skip
+						return;
+					}
 
 					var fsPath;
 					if (/^\.+\//.test(requirePath)) {
