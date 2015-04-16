@@ -1,11 +1,11 @@
 'use strict';
 
-var requireTextFunctionName = 'requireText';
-
 var path = require('path');
 var through = require('through');
 var falafel = require('falafel');
 var fs = require('fs');
+
+var prefix = /^text!/;
 
 function create(config) {
 	return function(file) {
@@ -16,12 +16,7 @@ function create(config) {
 
 		var tr = through(function(buf){source += buf;}, function(){
 			try {
-				// Avoid parsing the file if the function can't be there
-				if (-1 === source.indexOf(requireTextFunctionName)) {
-					tr.queue(source);
-				} else {
-					tr.queue(parse(source));
-				}
+				tr.queue(parse(source));
 			} catch(err) {
 				err.debowerifyFile = file;
 				err.sourcecode = source;
@@ -35,8 +30,16 @@ function create(config) {
 			return String(falafel(source, { locations: true, ecmaVersion: 6 }, function(node) {
 
 				// Find require() calls
-				if (node.type === 'CallExpression' && node.callee.type === 'Identifier' && node.callee.name === requireTextFunctionName) {
-					var requirePath = node.arguments[0].value;
+				if (node.type === 'CallExpression' && node.callee.type === 'Identifier') {
+					var requirePath;
+
+					if(node.callee.name === 'requireText') { // requireText("file.txt")
+						requirePath = node.arguments[0].value;
+					} else if(node.callee.name === 'require' && prefix.test(node.arguments[0].value)) { // require("text!file.txt")
+						requirePath = node.arguments[0].value.replace(prefix, '');
+					} else {// none of the above, skip
+						return;
+					}
 
 					var fsPath;
 					if (/^\.+\//.test(requirePath)) {
